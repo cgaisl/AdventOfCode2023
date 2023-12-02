@@ -13,7 +13,7 @@ fun main() {
 
     val testInput1 = readInput("day00/Day00_test1")
     val testInput2 = readInput("day00/Day00_test2")
-    val input = readInput("Day00")
+    val input = readInput("day00/Day00")
 
     check(part1(testInput1) == 0)
     check(part2(testInput2) == 0)
