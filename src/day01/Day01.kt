@@ -1,3 +1,8 @@
+package day01
+
+import println
+import readInput
+
 fun main() {
     fun part1(input: List<String>): Int {
         return input
@@ -16,14 +21,12 @@ fun main() {
             .reduce(Int::plus)
     }
 
-    // test if implementation meets criteria from the description, like:
-    val testInput1 = readInput("Day01_test1")
+    val testInput1 = readInput("day01/Day01_test1")
+    val testInput2 = readInput("day01/Day01_test2")
+    val input = readInput("day01/Day01")
+
     check(part1(testInput1) == 142)
-
-    val testInput2 = readInput("Day01_test2")
     check(part2(testInput2) == 281)
-
-    val input = readInput("Day01")
     part1(input).println()
     part2(input).println()
 }
