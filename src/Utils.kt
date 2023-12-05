@@ -19,3 +19,17 @@ fun String.md5() = BigInteger(1, MessageDigest.getInstance("MD5").digest(toByteA
  * The cleaner shorthand for printing output.
  */
 fun Any?.println() = println(this)
+
+fun LongRange.splitInto(n: Int): List<LongRange> {
+    val chunkSize = (endInclusive - start + 1) / n
+    val ranges = mutableListOf<LongRange>()
+
+    var currentStart = start
+    repeat(n) {
+        val end = currentStart + chunkSize - 1
+        ranges += currentStart..if (it == n - 1) endInclusive else end
+        currentStart = end + 1
+    }
+
+    return ranges
+}
