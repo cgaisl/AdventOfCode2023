@@ -33,4 +33,6 @@ done
 sed -i '' "s/Day00/Day$input/g" "$folder_name/Day$input.kt"
 sed -i '' "s/day00/day$input/g" "$folder_name/Day$input.kt"
 
+git add .
+
 echo "Folder and files copied and renamed successfully."

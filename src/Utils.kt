@@ -33,3 +33,15 @@ fun LongRange.splitInto(n: Int): List<LongRange> {
 
     return ranges
 }
+
+fun String.splitByWhitespaces() = split("\\s+".toRegex())
+
+// Calculate pair of solutions for quadratic equation ax^2 + bx + c = 0 using BigIntegers
+fun solveQuadraticEquation(a: BigInteger, b: BigInteger, c: BigInteger): Pair<BigInteger, BigInteger> {
+    val discriminant = b.pow(2) - 4.toBigInteger() * a * c
+
+    val x1 = (-b + discriminant.sqrt()) / (2.toBigInteger() * a)
+    val x2 = (-b - discriminant.sqrt()) / (2.toBigInteger() * a)
+
+    return x1 to x2
+}
