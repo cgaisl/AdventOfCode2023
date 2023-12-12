@@ -46,8 +46,6 @@ fun solveQuadraticEquation(a: BigInteger, b: BigInteger, c: BigInteger): Pair<Bi
     return x1 to x2
 }
 
-
-
 fun List<Int>.lcm(): Long {
     fun gcd(a: Long, b: Long): Long {
         return if (b == 0L) {
@@ -55,14 +53,6 @@ fun List<Int>.lcm(): Long {
         } else {
             gcd(b, a % b)
         }
-    }
-
-    fun List<Long>.gcd(): Long {
-        var result = get(0)
-        for (i in 1 until size) {
-            result = gcd(result, get(i))
-        }
-        return result
     }
 
     fun lcm(a: Long, b: Long): Long = (a * b) / gcd(a, b)
@@ -73,3 +63,8 @@ fun List<Int>.lcm(): Long {
     }
     return result
 }
+
+data class Pos(val x: Int, val y: Int)
+
+fun <T> List<List<T>>.get(pos: Pos): T = get(pos.y).get(pos.x)
+fun <T> List<List<T>>.getOrNull(pos: Pos): T? = getOrNull(pos.y)?.getOrNull(pos.x)
