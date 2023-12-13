@@ -80,3 +80,11 @@ fun <T> List<T>.allPossiblePairs(): Set<Pair<T,T>> {
 
     return pairs
 }
+
+val <T> List<List<T>>.rows: List<List<T>>
+    get() = this
+val <T> List<List<T>>.columns: List<List<T>>
+    get() = (0 until first().size).map { columnIndex -> map { it[columnIndex] } }
+
+fun <T> List<List<T>>.transpose(): List<List<T>> = columns
+
