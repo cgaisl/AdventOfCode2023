@@ -86,7 +86,11 @@ val <T> List<List<T>>.rows: List<List<T>>
 val <T> List<List<T>>.columns: List<List<T>>
     get() = (0 until first().size).map { columnIndex -> map { it[columnIndex] } }
 
-fun <T> List<List<T>>.transpose(): List<List<T>> = columns
+fun <T> MutableList<MutableList<T>>.rotateClockwise() {
+    val rotated = columns.map { it.reversed() }
+    clear()
+    addAll(rotated.toMutableList().map { it.toMutableList() })
+}
 
 typealias CharGrid = List<List<Char>>
 

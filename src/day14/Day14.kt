@@ -4,6 +4,7 @@ import MutableCharGrid
 import copy
 import println
 import readInput
+import rotateClockwise
 import toMutableCharGrid
 
 fun main() {
@@ -64,47 +65,18 @@ fun main() {
 
 
 fun MutableCharGrid.cycle() {
-    // north
-    for (x in 0 until first().size) for (y in 1 until size) {
-        if (this[y][x] != 'O') continue
-        var rockAboveIndex = y - 1
-        while (rockAboveIndex >= 0 && this[rockAboveIndex][x] == '.') {
-            this[rockAboveIndex][x] = 'O'
-            this[rockAboveIndex + 1][x] = '.'
-            rockAboveIndex--
+    repeat(4) {
+        // north
+        for (x in 0 until first().size) for (y in 1 until size) {
+            if (this[y][x] != 'O') continue
+            var rockAboveIndex = y - 1
+            while (rockAboveIndex >= 0 && this[rockAboveIndex][x] == '.') {
+                this[rockAboveIndex][x] = 'O'
+                this[rockAboveIndex + 1][x] = '.'
+                rockAboveIndex--
+            }
         }
-    }
 
-    // west
-    for (y in 0 until size) for (x in 1 until first().size) {
-        if (this[y][x] != 'O') continue
-        var rockAboveIndex = x - 1
-        while (rockAboveIndex >= 0 && this[y][rockAboveIndex] == '.') {
-            this[y][rockAboveIndex] = 'O'
-            this[y][rockAboveIndex + 1] = '.'
-            rockAboveIndex--
-        }
-    }
-
-    // south
-    for (x in 0 until first().size) for (y in size - 2 downTo 0) {
-        if (this[y][x] != 'O') continue
-        var rockAboveIndex = y + 1
-        while (rockAboveIndex < size && this[rockAboveIndex][x] == '.') {
-            this[rockAboveIndex][x] = 'O'
-            this[rockAboveIndex - 1][x] = '.'
-            rockAboveIndex++
-        }
-    }
-
-    //east
-    for (y in 0 until size) for (x in first().size - 2 downTo 0) {
-        if (this[y][x] != 'O') continue
-        var rockAboveIndex = x + 1
-        while (rockAboveIndex < first().size && this[y][rockAboveIndex] == '.') {
-            this[y][rockAboveIndex] = 'O'
-            this[y][rockAboveIndex - 1] = '.'
-            rockAboveIndex++
-        }
+        rotateClockwise()
     }
 }
