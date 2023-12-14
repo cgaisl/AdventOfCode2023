@@ -69,8 +69,8 @@ data class Pos(val x: Int, val y: Int)
 fun <T> List<List<T>>.get(pos: Pos): T = get(pos.y).get(pos.x)
 fun <T> List<List<T>>.getOrNull(pos: Pos): T? = getOrNull(pos.y)?.getOrNull(pos.x)
 
-fun <T> List<T>.allPossiblePairs(): Set<Pair<T,T>> {
-    val pairs = mutableSetOf<Pair<T,T>>()
+fun <T> List<T>.allPossiblePairs(): Set<Pair<T, T>> {
+    val pairs = mutableSetOf<Pair<T, T>>()
 
     forEachIndexed { index, t1 ->
         for (i in index + 1 until size) {
@@ -88,3 +88,15 @@ val <T> List<List<T>>.columns: List<List<T>>
 
 fun <T> List<List<T>>.transpose(): List<List<T>> = columns
 
+typealias CharGrid = List<List<Char>>
+
+typealias MutableCharGrid = MutableList<MutableList<Char>>
+
+fun List<String>.toMutableCharGrid(): MutableCharGrid = map { it.toMutableList() }.toMutableList()
+
+fun CharGrid.print() {
+    println("Grid:")
+    forEach { println(it.joinToString("")) }
+}
+
+fun MutableCharGrid.copy(): MutableCharGrid = map { it.toMutableList() }.toMutableList()

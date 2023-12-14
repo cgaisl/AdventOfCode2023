@@ -1,11 +1,11 @@
 package day13
 
+import CharGrid
 import columns
 import println
 import readInput
 import rows
 
-typealias CharGrid = List<List<Char>>
 
 fun main() {
     fun part1(input: List<String>): Int {
