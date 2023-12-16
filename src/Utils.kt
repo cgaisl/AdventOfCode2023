@@ -64,7 +64,15 @@ fun List<Int>.lcm(): Long {
     return result
 }
 
-data class Pos(val x: Int, val y: Int)
+data class Pos(val x: Int, val y: Int) {
+    // override the plus operator to make it possible to add Directions to Pos
+    operator fun plus(direction: Direction): Pos = when (direction) {
+        Direction.UP -> Pos(x, y - 1)
+        Direction.DOWN -> Pos(x, y + 1)
+        Direction.LEFT -> Pos(x - 1, y)
+        Direction.RIGHT -> Pos(x + 1, y)
+    }
+}
 
 fun <T> List<List<T>>.get(pos: Pos): T = get(pos.y).get(pos.x)
 fun <T> List<List<T>>.getOrNull(pos: Pos): T? = getOrNull(pos.y)?.getOrNull(pos.x)
@@ -103,4 +111,9 @@ fun CharGrid.print() {
     forEach { println(it.joinToString("")) }
 }
 
-fun MutableCharGrid.copy(): MutableCharGrid = map { it.toMutableList() }.toMutableList()
+fun <T> MutableList<MutableList<T>>.copy() = map { it.toMutableList() }.toMutableList()
+
+
+enum class Direction {
+    UP, DOWN, LEFT, RIGHT
+}
