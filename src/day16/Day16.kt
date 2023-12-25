@@ -2,7 +2,7 @@ package day16
 
 import Direction
 import Direction.*
-import Pos
+import P2
 import columns
 import println
 import readInput
@@ -67,19 +67,19 @@ fun main() {
     }
 
     fun part1(input: List<String>): Int {
-        return calculateEnergized(input, Ray(Pos(-1, 0), RIGHT))
+        return calculateEnergized(input, Ray(P2(-1, 0), RIGHT))
     }
 
     fun part2(input: List<String>): Int {
         val grid = input.toMutableCharGrid()
 
-        val edgePositions = grid.rows.first().mapIndexed { x, tile -> Pos(x, 0) }
+        val edgePositions = grid.rows.first().mapIndexed { x, tile -> P2(x, 0) }
             .map { Ray(pos = it.copy(it.x, it.y - 1), direction = DOWN) } +
-                grid.rows.last().mapIndexed { x, tile -> Pos(x, grid.size - 1) }
+                grid.rows.last().mapIndexed { x, tile -> P2(x, grid.size - 1) }
                     .map { Ray(pos = it.copy(it.x, it.y + 1), direction = UP) } +
-                grid.columns.first().mapIndexed { y, tile -> Pos(0, y) }
+                grid.columns.first().mapIndexed { y, tile -> P2(0, y) }
                     .map { Ray(pos = it.copy(it.x - 1, it.y), direction = RIGHT) } +
-                grid.columns.last().mapIndexed { y, tile -> Pos(grid.first().size - 1, y) }
+                grid.columns.last().mapIndexed { y, tile -> P2(grid.first().size - 1, y) }
                     .map { Ray(pos = it.copy(it.x + 1, it.y), direction = LEFT) }
 
         return edgePositions.map { calculateEnergized(input, it) }.max()
@@ -101,7 +101,7 @@ data class Tile(
 )
 
 class Ray(
-    var pos: Pos,
+    var pos: P2,
     var direction: Direction,
 ) {
     private val initial = pos to direction

@@ -2,7 +2,7 @@
 
 package day11
 
-import Pos
+import P2
 import allPossiblePairs
 import println
 import readInput
@@ -35,7 +35,7 @@ fun main() {
     part2(input, 1000000).println()
 }
 
-fun Pos.distanceTo(other: Pos): Int {
+fun P2.distanceTo(other: P2): Int {
     return Math.abs(x - other.x) + Math.abs(y - other.y)
 }
 
@@ -44,14 +44,14 @@ data class ExpansionTable(
     val yExpansion: Map<Int, Int>,
 )
 
-fun Pos.expanded(expansionTable: ExpansionTable, factor: Int): Pos {
+fun P2.expanded(expansionTable: ExpansionTable, factor: Int): P2 {
     return copy(
         x = x + expansionTable.xExpansion[x]!! * (factor - 1),
         y = y + expansionTable.yExpansion[y]!! * (factor - 1)
     )
 }
 
-fun List<String>.getStarPosWithExpansionTable(): Pair<List<Pos>, ExpansionTable> {
+fun List<String>.getStarPosWithExpansionTable(): Pair<List<P2>, ExpansionTable> {
     val universe = map { it.toCharArray() }
 
     val xExpansionPoints = mutableListOf<Int>()
@@ -70,7 +70,7 @@ fun List<String>.getStarPosWithExpansionTable(): Pair<List<Pos>, ExpansionTable>
 
     val starPos = universe.flatMapIndexed { y, list ->
         list.toList().mapIndexedNotNull { x, element ->
-            if (element == '#') Pos(x, y)
+            if (element == '#') P2(x, y)
             else null
         }
     }
@@ -81,7 +81,7 @@ fun List<String>.getStarPosWithExpansionTable(): Pair<List<Pos>, ExpansionTable>
     )
 }
 
-fun List<String>.expandAndGetStarPos(): List<Pos> {
+fun List<String>.expandAndGetStarPos(): List<P2> {
     val universe = map {
         it.toCharArray().toMutableList()
     }.toMutableList()
@@ -108,7 +108,7 @@ fun List<String>.expandAndGetStarPos(): List<Pos> {
 
     return universe.flatMapIndexed { y, list ->
         list.mapIndexedNotNull { x, element ->
-            if (element == '#') Pos(x, y)
+            if (element == '#') P2(x, y)
             else null
         }
     }

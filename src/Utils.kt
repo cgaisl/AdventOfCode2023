@@ -64,18 +64,22 @@ fun List<Int>.lcm(): Long {
     return result
 }
 
-data class Pos(val x: Int, val y: Int) {
-    // override the plus operator to make it possible to add Directions to Pos
-    operator fun plus(direction: Direction): Pos = when (direction) {
-        Direction.UP -> Pos(x, y - 1)
-        Direction.DOWN -> Pos(x, y + 1)
-        Direction.LEFT -> Pos(x - 1, y)
-        Direction.RIGHT -> Pos(x + 1, y)
+data class P2(val x: Int, val y: Int) {
+    operator fun plus(direction: Direction): P2 = when (direction) {
+        Direction.UP -> P2(x, y - 1)
+        Direction.DOWN -> P2(x, y + 1)
+        Direction.LEFT -> P2(x - 1, y)
+        Direction.RIGHT -> P2(x + 1, y)
     }
+
+    operator fun plus(other: P2): P2 = P2(x + other.x, y + other.y)
 }
 
-fun <T> List<List<T>>.get(pos: Pos): T = get(pos.y).get(pos.x)
-fun <T> List<List<T>>.getOrNull(pos: Pos): T? = getOrNull(pos.y)?.getOrNull(pos.x)
+operator fun <T> List<List<T>>.get(pos: P2): T = get(pos.y).get(pos.x)
+fun <T> List<List<T>>.getOrNull(pos: P2): T? = getOrNull(pos.y)?.getOrNull(pos.x)
+operator fun <T> MutableList<MutableList<T>>.set(pos: P2, value: T) {
+    this[pos.y][pos.x] = value
+}
 
 fun <T> List<T>.allPossiblePairs(): Set<Pair<T, T>> {
     val pairs = mutableSetOf<Pair<T, T>>()
@@ -116,4 +120,84 @@ fun <T> MutableList<MutableList<T>>.copy() = map { it.toMutableList() }.toMutabl
 
 enum class Direction {
     UP, DOWN, LEFT, RIGHT
+}
+
+
+class Heap<K, V : Comparable<V>> {
+    private data class Data<V>(var v: V, var i: Int)
+
+    private var size = 0
+    private var h = arrayOfNulls<Any>(1024)
+    private val d = HashMap<K, Data<V>>()
+
+    fun isEmpty() = size == 0
+
+    fun removeMin(): Pair<K, V> {
+        val resK = h[0] as K
+        val resV = d[resK]!!.v
+        size--
+        var i = 0
+        val ik = h[size] as K
+        val id = d[ik]!!
+        h[0] = ik
+        id.i = 0
+        h[size] = null
+        while (true) {
+            var t = 2 * i + 1
+            var j = i
+            var jd = id
+            if (t >= size) break
+            var td = d[h[t]]!!
+            if (td.v < jd.v) {
+                j = t
+                jd = td
+            }
+            t++
+            if (t < size) {
+                td = d[h[t]]!!
+                if (td.v < jd.v) {
+                    j = t
+                    jd = td
+                }
+            }
+            if (j == i) break
+            val jk = h[j] as K
+            h[i] = jk
+            jd.i = i
+            h[j] = ik
+            id.i = j
+            i = j
+        }
+        return resK to resV
+    }
+
+    fun putBetter(k: K, v: V): Boolean {
+        val kd0 = d[k]
+        var i: Int
+        val id: Data<V>
+        if (kd0 == null) {
+            i = size++
+            id = Data(v, i)
+            if (i >= h.size) h = h.copyOf(h.size * 2)
+            h[i] = k
+            d[k] = id
+        } else {
+            if (kd0.v <= v) return false
+            i = kd0.i
+            id = kd0
+            id.v = v
+        }
+        while (i > 0) {
+            val j = (i - 1) / 2
+            val jd = d[h[j]]!!
+            if (jd.v <= id.v) break
+            val jk = h[j] as K
+            h[i] = jk
+            jd.i = i
+            h[j] = k
+            id.i = j
+            i = j
+        }
+        return true
+    }
 }

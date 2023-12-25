@@ -1,6 +1,6 @@
 package day10
 
-import Pos
+import P2
 import get
 import getOrNull
 import println
@@ -26,9 +26,9 @@ fun main() {
             var inside = false
 
             line.mapIndexed { x, tile ->
-                if (tile.crossing && tunnelTiles.contains(Pos(x, y))) {
+                if (tile.crossing && tunnelTiles.contains(P2(x, y))) {
                     inside = !inside
-                } else if (inside && !tunnelTiles.contains(Pos(x, y))) {
+                } else if (inside && !tunnelTiles.contains(P2(x, y))) {
                     count++
                 }
             }
@@ -51,8 +51,8 @@ fun main() {
     part2(input).println()
 }
 
-fun List<List<Tile>>.getAllTunnelTilePositions(): List<Pos> {
-    val startPos = Pos(
+fun List<List<Tile>>.getAllTunnelTilePositions(): List<P2> {
+    val startPos = P2(
         x = first { it.any { it.start } }
             .indexOfFirst { it.start },
         y = indexOfFirst { it.any { it.start } }
@@ -60,10 +60,10 @@ fun List<List<Tile>>.getAllTunnelTilePositions(): List<Pos> {
 
     var prevPos = startPos
     var current =
-        if (get(startPos).up) Pos(startPos.x, startPos.y - 1)
-        else if (get(startPos).down) Pos(startPos.x, startPos.y + 1)
-        else if (get(startPos).left) Pos(startPos.x - 1, startPos.y)
-        else Pos(startPos.x + 1, startPos.y)
+        if (get(startPos).up) P2(startPos.x, startPos.y - 1)
+        else if (get(startPos).down) P2(startPos.x, startPos.y + 1)
+        else if (get(startPos).left) P2(startPos.x - 1, startPos.y)
+        else P2(startPos.x + 1, startPos.y)
 
     val positions = mutableListOf(current)
 
@@ -121,10 +121,10 @@ fun List<String>.parseInput(): List<List<Tile>> {
                 val right = if (x == line.size - 1) false else null
 
                 tile.copy(
-                    up = up ?: tiles.get(Pos(x, y - 1)).down,
-                    down = down ?: tiles.get(Pos(x, y + 1)).up,
-                    left = left ?: tiles.get(Pos(x - 1, y)).right,
-                    right = right ?: tiles.get(Pos(x + 1, y)).left,
+                    up = up ?: tiles.get(P2(x, y - 1)).down,
+                    down = down ?: tiles.get(P2(x, y + 1)).up,
+                    left = left ?: tiles.get(P2(x - 1, y)).right,
+                    right = right ?: tiles.get(P2(x + 1, y)).left,
                 )
             } else {
                 tile
@@ -133,23 +133,23 @@ fun List<String>.parseInput(): List<List<Tile>> {
     }
 }
 
-fun List<List<Tile>>.indicesOfNeighbors(pos: Pos): List<Pos> {
+fun List<List<Tile>>.indicesOfNeighbors(pos: P2): List<P2> {
     val tile = getOrNull(pos) ?: return emptyList()
 
-    val neighbors = mutableListOf<Pos>()
+    val neighbors = mutableListOf<P2>()
     if (tile.up) {
-        neighbors.add(Pos(pos.x, pos.y - 1))
+        neighbors.add(P2(pos.x, pos.y - 1))
     }
     if (tile.down) {
-        neighbors.add(Pos(pos.x, pos.y + 1))
+        neighbors.add(P2(pos.x, pos.y + 1))
     }
 
     if (tile.left) {
-        neighbors.add(Pos(pos.x - 1, pos.y))
+        neighbors.add(P2(pos.x - 1, pos.y))
     }
 
     if (tile.right) {
-        neighbors.add(Pos(pos.x + 1, pos.y))
+        neighbors.add(P2(pos.x + 1, pos.y))
     }
 
     return neighbors
