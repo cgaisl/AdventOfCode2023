@@ -72,11 +72,19 @@ data class P2(val x: Int, val y: Int) {
         Direction.RIGHT -> P2(x + 1, y)
     }
 
+    fun addInDirection(direction: Direction, distance: Int): P2 = when (direction) {
+        Direction.UP -> P2(x, y - distance)
+        Direction.DOWN -> P2(x, y + distance)
+        Direction.LEFT -> P2(x - distance, y)
+        Direction.RIGHT -> P2(x + distance, y)
+    }
+
     operator fun plus(other: P2): P2 = P2(x + other.x, y + other.y)
 }
 
 operator fun <T> List<List<T>>.get(pos: P2): T = get(pos.y).get(pos.x)
 fun <T> List<List<T>>.getOrNull(pos: P2): T? = getOrNull(pos.y)?.getOrNull(pos.x)
+fun <T> Array<Array<T>>.getOrNull(pos: P2): T? = getOrNull(pos.y)?.getOrNull(pos.x)
 operator fun <T> MutableList<MutableList<T>>.set(pos: P2, value: T) {
     this[pos.y][pos.x] = value
 }
@@ -111,6 +119,11 @@ typealias MutableCharGrid = MutableList<MutableList<Char>>
 fun List<String>.toMutableCharGrid(): MutableCharGrid = map { it.toMutableList() }.toMutableList()
 
 fun CharGrid.print() {
+    println("Grid:")
+    forEach { println(it.joinToString("")) }
+}
+
+fun <T> Array<Array<T>>.print() {
     println("Grid:")
     forEach { println(it.joinToString("")) }
 }
